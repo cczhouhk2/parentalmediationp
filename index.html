@@ -801,7 +801,16 @@
         }
 
         function calculateScores() {
-            const form = document.activeElement.form || document.getElementById('survey-form') || document.getElementById('survey-form-ch');
+            // Determine which form to use based on which survey is visible
+            let form;
+            const englishSurveyVisible = getComputedStyle(document.getElementById('english-survey')).display !== 'none';
+            
+            if (englishSurveyVisible) {
+                form = document.getElementById('survey-form');
+            } else {
+                form = document.getElementById('survey-form-ch');
+            }
+            
             const inputs = form.querySelectorAll('input[type="radio"]:checked');
             const scores = {};
 
@@ -862,8 +871,9 @@
             parentalMonitoring /= monitoringItems.length;
 
             const resultsDiv = document.getElementById('results');
+            const resultTitle = englishSurveyVisible ? 'Your Parental Mediation Scores' : '你的家長干預分數';
             resultsDiv.innerHTML = `
-                <h3>Your Parental Mediation Scores</h3>
+                <h3>${resultTitle}</h3>
                 <div class="chart-container">
                     <canvas id="scoresChart"></canvas>
                 </div>
@@ -873,12 +883,17 @@
             `;
 
             const ctx = document.getElementById('scoresChart').getContext('2d');
+            const chartLabels = englishSurveyVisible ? 
+                ['Active Mediation', 'Co-use', 'Restrictive Mediation', 'Diversion Mediation', 'Health Mediation', 'Technical Mediation', 'Parental Monitoring'] :
+                ['積極干預', '共同使用', '限制性干預', '轉移干預', '健康干預', '技術干預', '家長監控'];
+            const scoreLabel = englishSurveyVisible ? 'Score' : '分數';
+            
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Active Mediation', 'Co-use', 'Restrictive Mediation', 'Diversion Mediation', 'Health Mediation', 'Technical Mediation', 'Parental Monitoring'],
+                    labels: chartLabels,
                     datasets: [{
-                        label: 'Score',
+                        label: scoreLabel,
                         data: [activeMediation, coUse, restrictiveMediation, diversionMediation, healthMediation, technicalMediation, parentalMonitoring],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -915,9 +930,9 @@
             new Chart(radarCtx, {
                 type: 'radar',
                 data: {
-                    labels: ['Active Mediation', 'Co-use', 'Restrictive Mediation', 'Diversion Mediation', 'Health Mediation', 'Technical Mediation', 'Parental Monitoring'],
+                    labels: chartLabels,
                     datasets: [{
-                        label: 'Score',
+                        label: scoreLabel,
                         data: [activeMediation, coUse, restrictiveMediation, diversionMediation, healthMediation, technicalMediation, parentalMonitoring],
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
