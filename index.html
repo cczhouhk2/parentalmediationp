@@ -23,19 +23,29 @@
             max-width: 900px;
             margin: 0 auto;
             background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
         }
         .title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
+            color: #333;
+        }
+        .title small {
+            display: block;
+            font-size: 14px;
+            color: #999;
+            margin-top: 5px;
+            font-weight: normal;
         }
         .language-toggle {
             display: flex;
@@ -53,37 +63,107 @@
             background: #764ba2;
         }
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f7f7f9;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .scale-legend {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 20px;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #ddd;
+        }
+        .section > p {
+            margin-bottom: 12px;
+            color: #333;
+            line-height: 1.6;
         }
         .question {
-            margin-bottom: 15px;
+            margin-bottom: 25px;
+            padding: 18px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e8e8e8;
+            transition: all 0.2s ease;
+        }
+        .question:hover {
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+            border-color: #d0d0d8;
+        }
+        .question p {
+            margin: 0 0 15px 0;
+            font-weight: 500;
+            color: #333;
+            line-height: 1.6;
+            font-size: 15px;
         }
         .options {
-            margin-left: 20px;
+            margin-left: 0;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            justify-content: flex-start;
+        }
+        .options label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: #f9f9fa;
+            min-width: 44px;
+            text-align: center;
+        }
+        .options label:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+            color: #667eea;
         }
         .options input {
-            margin-right: 5px;
+            margin-right: 6px;
+            cursor: pointer;
+            accent-color: #667eea;
         }
-        .note {
-            font-style: italic;
-            color: #666;
-            margin-top: 10px;
+        .options input:checked ~ label,
+        .options input:checked + {
+            accent-color: #667eea;
         }
         .english { display: block; }
         .chinese { display: none; }
         button[type="button"] {
-            padding: 10px 20px;
+            padding: 12px 30px;
             background: #667eea;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }
         button[type="button"]:hover {
             background: #764ba2;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
         }
         #results {
             margin-top: 20px;
@@ -109,8 +189,7 @@
             <form id="survey-form">
                 <div class="section">
                     <h2>1. Parental Mediation Strategies</h2>
-                    <p>How often do you do any of these things to your child?</p>
-                    <p>Never (1) Rarely (2) Sometimes (3) Often (4) Very often (5)</p>
+                    <div class="scale-legend">Scale: 1 = Never, 2 = Rarely, 3 = Sometimes, 4 = Often, 5 = Very often</div>
 
                     <div class="question">
                         <p>a. Encourage he/she to explore and learn things on the Internet</p>
@@ -255,18 +334,12 @@
                         </div>
                     </div>
 
-                    <p class="note">Note: The questions above include 5 dimensions of parental mediation strategies. For each dimension, calculate the mean by averaging the scores of the items listed below.<br>
-                    Active mediation: item a-e<br>
-                    Co-use: item f & g<br>
-                    Restrictive mediation: item h & i<br>
-                    Diversion mediation: item j & k<br>
-                    Health mediation: l & m</p>
+
                 </div>
 
                 <div class="section">
                     <h2>2. Technical Mediation</h2>
-                    <p>Do you make use of any of the following on your child's digital devices?</p>
-                    <p>No (0) Yes (1)</p>
+                    <div class="scale-legend">Scale: 0 = No, 1 = Yes</div>
 
                     <div class="question">
                         <p>Software that limits the time he/she spent online</p>
@@ -300,13 +373,12 @@
                         </div>
                     </div>
 
-                    <p class="note">Note: technical mediation, add it up, then divide by 4</p>
+
                 </div>
 
                 <div class="section">
                     <h2>3. Parental Monitoring</h2>
-                    <p>How often do you check the following things for your child?</p>
-                    <p>Never (1) Rarely (2) Sometimes (3) Often (4) Very often (5)</p>
+                    <div class="scale-legend">Scale: 1 = Never, 2 = Rarely, 3 = Sometimes, 4 = Often, 5 = Very often</div>
 
                     <div class="question">
                         <p>Which friends or contacts he/she adds to his/her social networking profile/instant messaging service</p>
@@ -407,7 +479,7 @@
                         </div>
                     </div>
 
-                    <p class="note">Note: For parental monitoring, calculate the mean by averaging the scores of the items above.</p>
+
                 </div>
 
                 <button type="button" onclick="calculateScores()">Calculate Scores</button>
@@ -419,8 +491,7 @@
             <form id="survey-form-ch">
                 <div class="section">
                     <h2>1. 家長干預方式</h2>
-                    <p>你做以下事情的頻率有多高</p>
-                    <p>從不 (1) 很少 (2) 有時 (3) 經常 (4) 總是 (5)</p>
+                    <div class="scale-legend">視度：1 = 從不, 2 = 很少, 3 = 有時, 4 = 經常, 5 = 總是</div>
 
                     <div class="question">
                         <p>a. 鼓勵你的孩子在互聯網上探索和學習新東西</p>
@@ -565,18 +636,12 @@
                         </div>
                     </div>
 
-                    <p class="note">註： 以上問題涵蓋網絡使用家長干預方式的五個維度。每個維度請根據下列對應題目計算其平均分：<br>
-                    積極干預(Active mediation)： 題目 a–e<br>
-                    共同使用 (Co-use)： 題目 f 及 g<br>
-                    限制性干預 (Restrictive mediation)： 題目 h 及 i<br>
-                    轉移干預 (Diversion mediation)： 題目 j 及 k<br>
-                    健康干預 (Health mediation)： 題目 l 及 m</p>
+
                 </div>
 
                 <div class="section">
                     <h2>2. 技術干預</h2>
-                    <p>你是否在你孩子的電子產品上使用以下功能？</p>
-                    <p>否 (0) 是 (1)</p>
+                    <div class="scale-legend">視度：0 = 否, 1 = 是</div>
 
                     <div class="question">
                         <p>可以限製你的孩子上網時間的軟件</p>
@@ -609,14 +674,11 @@
                             <label><input type="radio" name="q2d" value="1"> 1</label>
                         </div>
                     </div>
-
-                    <p class="note">註：請計算上述各題目的平均分。</p>
                 </div>
 
                 <div class="section">
                     <h2>3. 家長監控</h2>
-                    <p>你檢查你的孩子以下事情的頻率是多高？</p>
-                    <p>從不 (1) 很少 (2) 有時 (3) 經常 (4) 總是 (5)</p>
+                    <div class="scale-legend">視度：1 = 從不, 2 = 很少, 3 = 有時, 4 = 經常, 5 = 總是</div>
 
                     <div class="question">
                         <p>你的孩子添加到社交網絡/通訊工具中的好友</p>
@@ -716,9 +778,6 @@
                             <label><input type="radio" name="q3i" value="5"> 5</label>
                         </div>
                     </div>
-
-                    <p class="note">註：請計算上述各題目的平均分。</p>
-                </div>
 
                 <button type="button" onclick="calculateScores()">計算分數</button>
                 <div id="results"></div>
