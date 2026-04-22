@@ -482,6 +482,25 @@
 
                 </div>
 
+                <div class="section">
+                    <h2>4. Contact Information (Optional)</h2>
+                    <p>Would you like to be contacted for future research?</p>
+                    <div class="options">
+                        <label><input type="radio" name="contactConsent" value="yes"> Yes</label>
+                        <label><input type="radio" name="contactConsent" value="no"> No</label>
+                    </div>
+                    <div id="contactForm-en" style="display:none; margin-top: 20px;">
+                        <div class="question">
+                            <p>Name:</p>
+                            <input type="text" id="contactName-en" placeholder="Enter your name" style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div class="question">
+                            <p>Email or Phone:</p>
+                            <input type="text" id="contactInfo-en" placeholder="Enter your email or phone number" style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" onclick="calculateScores()">Calculate Scores</button>
                 <div id="results-en"></div>
             </form>
@@ -779,6 +798,25 @@
                         </div>
                     </div>
 
+                <div class="section">
+                    <h2>4. 聯絡信息（可選）</h2>
+                    <p>你是否願意被聯絡參與未來的調查研究？</p>
+                    <div class="options">
+                        <label><input type="radio" name="contactConsent" value="yes"> 願意</label>
+                        <label><input type="radio" name="contactConsent" value="no"> 不願意</label>
+                    </div>
+                    <div id="contactForm-ch" style="display:none; margin-top: 20px;">
+                        <div class="question">
+                            <p>姓名：</p>
+                            <input type="text" id="contactName-ch" placeholder="請輸入你的姓名" style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div class="question">
+                            <p>電郵或電話：</p>
+                            <input type="text" id="contactInfo-ch" placeholder="請輸入你的電郵或電話號碼" style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" onclick="calculateScores()">計算分數</button>
                 <div id="results-ch"></div>
             </form>
@@ -800,7 +838,118 @@
             document.getElementById('btn-en').classList.remove('active');
         }
 
-        function calculateScores() {
+        // Add event listeners for contact consent radio buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const radioButtons = document.querySelectorAll('input[name="contactConsent"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const englishForm = document.getElementById('contactForm-en');
+                    const chineseForm = document.getElementById('contactForm-ch');
+                    
+                    if (this.value === 'yes') {
+                        englishForm.style.display = 'block';
+                        chineseForm.style.display = 'block';
+                    } else {
+                        englishForm.style.display = 'none';
+                        chineseForm.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function collectSurveyData() {
+            const englishSurveyVisible = getComputedStyle(document.getElementById('english-survey')).display !== 'none';
+            const form = englishSurveyVisible ? document.getElementById('survey-form') : document.getElementById('survey-form-ch');
+            
+            const data = {
+                timestamp: new Date().toISOString(),
+                language: englishSurveyVisible ? 'English' : 'Chinese',
+                responses: {},
+                contactInfo: {
+                    consent: '',
+                    name: '',
+                    contact: ''
+                }
+            };
+            
+            // Collect all responses
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+            inputs.forEach(input => {
+                const name = input.name;
+                const value = input.value;
+                if (!data.responses[name]) {
+                    data.responses[name] = value;
+                }
+            });
+            
+            // Collect contact info
+            const consentValue = form.querySelector('input[name="contactConsent"]:checked');
+            if (consentValue) {
+                data.contactInfo.consent = consentValue.value;
+                
+                if (consentValue.value === 'yes') {
+                    if (englishSurveyVisible) {
+                        data.contactInfo.name = document.getElementById('contactName-en').value;
+                        data.contactInfo.contact = document.getElementById('contactInfo-en').value;
+                    } else {
+                        data.contactInfo.name = document.getElementById('contactName-ch').value;
+                        data.contactInfo.contact = document.getElementById('contactInfo-ch').value;
+                    }
+                }
+            }
+            
+            return data;
+        }
+
+        function exportSurveyData() {
+            const allData = JSON.parse(localStorage.getItem('surveyResponses')) || [];
+            const csv = convertToCSV(allData);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'survey_responses_' + new Date().toISOString().split('T')[0] + '.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function convertToCSV(data) {
+            if (!data || data.length === 0) return '';
+            
+            const allKeys = new Set();
+            data.forEach(item => {
+                Object.keys(item.responses).forEach(key => allKeys.add(key));
+            });
+            
+            const headers = ['Timestamp', 'Language', 'Contact_Consent', 'Name', 'Contact_Info', ...Array.from(allKeys).sort()];
+            const csv = [headers.join(',')];
+            
+            data.forEach(item => {
+                const row = [
+                    item.timestamp,
+                    item.language,
+                    item.contactInfo.consent,
+                    item.contactInfo.name || '',
+                    item.contactInfo.contact || ''
+                ];
+                
+                Array.from(allKeys).sort().forEach(key => {
+                    row.push(item.responses[key] || '');
+                });
+                
+                csv.push(row.map(cell => {
+                    if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"') || cell.includes('\n'))) {
+                        return '"' + cell.replace(/"/g, '""') + '"';
+                    }
+                    return cell;
+                }).join(','));
+            });
+            
+            return csv.join('\n');
+        }
+
             // Determine which form to use based on which survey is visible
             let form, resultsDiv;
             const englishSurveyVisible = getComputedStyle(document.getElementById('english-survey')).display !== 'none';
@@ -872,8 +1021,24 @@
             });
             parentalMonitoring /= monitoringItems.length;
 
+            // Collect data including contact info
+            const surveyData = collectSurveyData();
+            
+            // Store data
+            let allResponses = JSON.parse(localStorage.getItem('surveyResponses')) || [];
+            allResponses.push(surveyData);
+            localStorage.setItem('surveyResponses', JSON.stringify(allResponses));
+            
             const resultTitle = englishSurveyVisible ? 'Your Parental Mediation Scores' : '你的家長干預分數';
+            const contactMessage = surveyData.contactInfo.consent === 'yes' 
+                ? (englishSurveyVisible 
+                    ? `<p style="color: #667eea; font-weight: 500; margin-bottom: 15px;">✓ Thank you! We'll contact you at ${surveyData.contactInfo.contact} for future research.</p>`
+                    : `<p style="color: #667eea; font-weight: 500; margin-bottom: 15px;">✓ 感謝你！我們將在未來與你聯絡進行研究。</p>`)
+                : '';
+            const exportButtonLabel = englishSurveyVisible ? 'Export All Responses' : '匯出所有回覆';
+            
             resultsDiv.innerHTML = `
+                ${contactMessage}
                 <h3>${resultTitle}</h3>
                 <div class="chart-container">
                     <canvas id="scoresChart"></canvas>
@@ -881,7 +1046,7 @@
                 <div class="chart-container">
                     <canvas id="radarChart"></canvas>
                 </div>
-            `;
+                <button type="button" onclick="exportSurveyData()" style="background: #764ba2; margin-top: 20px;">${exportButtonLabel}</button>`;
 
             setTimeout(() => {
                 const ctx = document.getElementById('scoresChart').getContext('2d');
