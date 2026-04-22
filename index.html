@@ -800,6 +800,7 @@
             document.getElementById('btn-en').classList.remove('active');
         }
 
+        function calculateScores() {
             // Determine which form to use based on which survey is visible
             let form, resultsDiv;
             const englishSurveyVisible = getComputedStyle(document.getElementById('english-survey')).display !== 'none';
