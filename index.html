@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parental Mediation Parent Survey (互聯網使用家長干預方式家長問卷)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        #root {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .language-toggle {
+            display: flex;
+            gap: 10px;
+        }
+        .language-toggle button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+        }
+        .language-toggle button.active {
+            background: #764ba2;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .options {
+            margin-left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .options input {
+            margin-right: 5px;
+        }
+        .note {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+        }
+        .english { display: block; }
+        .chinese { display: none; }
+        button[type="button"] {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="button"]:hover {
+            background: #764ba2;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="header">
+            <div class="title">Parental Mediation Parent Survey<br><small>互聯網使用家長干預方式家長問卷</small></div>
+            <div class="language-toggle">
+                <button id="btn-en" class="active" onclick="showEnglish()">English</button>
+                <button id="btn-zh" onclick="showChinese()">中文</button>
+            </div>
+        </div>
+
+        <div id="english-survey" class="english">
+            <form id="survey-form">
+                <div class="section">
+                    <h2>1. Parental Mediation Strategies</h2>
+                    <p>How often do you do any of these things to your child?</p>
+                    <p>Never (1) Rarely (2) Sometimes (3) Often (4) Very often (5)</p>
+
+                    <div class="question">
+                        <p>a. Encourage he/she to explore and learn things on the Internet</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1a" value="1"> 1</label>
+                            <label><input type="radio" name="q1a" value="2"> 2</label>
+                            <label><input type="radio" name="q1a" value="3"> 3</label>
+                            <label><input type="radio" name="q1a" value="4"> 4</label>
+                            <label><input type="radio" name="q1a" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>b. Suggest ways to use the Internet safely</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1b" value="1"> 1</label>
+                            <label><input type="radio" name="q1b" value="2"> 2</label>
+                            <label><input type="radio" name="q1b" value="3"> 3</label>
+                            <label><input type="radio" name="q1b" value="4"> 4</label>
+                            <label><input type="radio" name="q1b" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>c. Help him/her when something is difficult to do or find on the Internet</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1c" value="1"> 1</label>
+                            <label><input type="radio" name="q1c" value="2"> 2</label>
+                            <label><input type="radio" name="q1c" value="3"> 3</label>
+                            <label><input type="radio" name="q1c" value="4"> 4</label>
+                            <label><input type="radio" name="q1c" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>d. Explain why some websites are appropriate or inappropriate</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1d" value="1"> 1</label>
+                            <label><input type="radio" name="q1d" value="2"> 2</label>
+                            <label><input type="radio" name="q1d" value="3"> 3</label>
+                            <label><input type="radio" name="q1d" value="4"> 4</label>
+                            <label><input type="radio" name="q1d" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>e. Talk to him/her about the commercial activities he/she is exposed to online</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1e" value="1"> 1</label>
+                            <label><input type="radio" name="q1e" value="2"> 2</label>
+                            <label><input type="radio" name="q1e" value="3"> 3</label>
+                            <label><input type="radio" name="q1e" value="4"> 4</label>
+                            <label><input type="radio" name="q1e" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>f. Sit with him/her while he/she uses the Internet</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1f" value="1"> 1</label>
+                            <label><input type="radio" name="q1f" value="2"> 2</label>
+                            <label><input type="radio" name="q1f" value="3"> 3</label>
+                            <label><input type="radio" name="q1f" value="4"> 4</label>
+                            <label><input type="radio" name="q1f" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>g. Do activities together with him/her on the Internet</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1g" value="1"> 1</label>
+                            <label><input type="radio" name="q1g" value="2"> 2</label>
+                            <label><input type="radio" name="q1g" value="3"> 3</label>
+                            <label><input type="radio" name="q1g" value="4"> 4</label>
+                            <label><input type="radio" name="q1g" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>h. Limit how long or when he/she go online</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1h" value="1"> 1</label>
+                            <label><input type="radio" name="q1h" value="2"> 2</label>
+                            <label><input type="radio" name="q1h" value="3"> 3</label>
+                            <label><input type="radio" name="q1h" value="4"> 4</label>
+                            <label><input type="radio" name="q1h" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>i. Limit what he/she is allowed to do online</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1i" value="1"> 1</label>
+                            <label><input type="radio" name="q1i" value="2"> 2</label>
+                            <label><input type="radio" name="q1i" value="3"> 3</label>
+                            <label><input type="radio" name="q1i" value="4"> 4</label>
+                            <label><input type="radio" name="q1i" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>j. Request that he/she takes breaks from the digital devices</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1j" value="1"> 1</label>
+                            <label><input type="radio" name="q1j" value="2"> 2</label>
+                            <label><input type="radio" name="q1j" value="3"> 3</label>
+                            <label><input type="radio" name="q1j" value="4"> 4</label>
+                            <label><input type="radio" name="q1j" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>k. Suggest alternative activities instead of digital activities (such as playing outside)</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1k" value="1"> 1</label>
+                            <label><input type="radio" name="q1k" value="2"> 2</label>
+                            <label><input type="radio" name="q1k" value="3"> 3</label>
+                            <label><input type="radio" name="q1k" value="4"> 4</label>
+                            <label><input type="radio" name="q1k" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>l. Request that he/she use a device with a bigger screen</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1l" value="1"> 1</label>
+                            <label><input type="radio" name="q1l" value="2"> 2</label>
+                            <label><input type="radio" name="q1l" value="3"> 3</label>
+                            <label><input type="radio" name="q1l" value="4"> 4</label>
+                            <label><input type="radio" name="q1l" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>m. Remind or monitor him/her to sit at a certain distance from the screen</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1m" value="1"> 1</label>
+                            <label><input type="radio" name="q1m" value="2"> 2</label>
+                            <label><input type="radio" name="q1m" value="3"> 3</label>
+                            <label><input type="radio" name="q1m" value="4"> 4</label>
+                            <label><input type="radio" name="q1m" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <p class="note">Note: The questions above include 5 dimensions of parental mediation strategies. For each dimension, calculate the mean by averaging the scores of the items listed below.<br>
+                    Active mediation: item a-e<br>
+                    Co-use: item f & g<br>
+                    Restrictive mediation: item h & i<br>
+                    Diversion mediation: item j & k<br>
+                    Health mediation: l & m</p>
+                </div>
+
+                <div class="section">
+                    <h2>2. Technical Mediation</h2>
+                    <p>Do you make use of any of the following on your child's digital devices?</p>
+                    <p>No (0) Yes (1)</p>
+
+                    <div class="question">
+                        <p>Software that limits the time he/she spent online</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2a" value="0"> 0</label>
+                            <label><input type="radio" name="q2a" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>Software to prevent viruses</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2b" value="0"> 0</label>
+                            <label><input type="radio" name="q2b" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>Ad blocking software or extensions</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2c" value="0"> 0</label>
+                            <label><input type="radio" name="q2c" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>Minor mode in Apps</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2d" value="0"> 0</label>
+                            <label><input type="radio" name="q2d" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <p class="note">Note: technical mediation, add it up, then divide by 4</p>
+                </div>
+
+                <div class="section">
+                    <h2>3. Parental Monitoring</h2>
+                    <p>How often do you check the following things for your child?</p>
+                    <p>Never (1) Rarely (2) Sometimes (3) Often (4) Very often (5)</p>
+
+                    <div class="question">
+                        <p>Which friends or contacts he/she adds to his/her social networking profile/instant messaging service</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3a" value="1"> 1</label>
+                            <label><input type="radio" name="q3a" value="2"> 2</label>
+                            <label><input type="radio" name="q3a" value="3"> 3</label>
+                            <label><input type="radio" name="q3a" value="4"> 4</label>
+                            <label><input type="radio" name="q3a" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>The messages in his/her chat history for communicating with people</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3b" value="1"> 1</label>
+                            <label><input type="radio" name="q3b" value="2"> 2</label>
+                            <label><input type="radio" name="q3b" value="3"> 3</label>
+                            <label><input type="radio" name="q3b" value="4"> 4</label>
+                            <label><input type="radio" name="q3b" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>His/Her profile on a social networking site or online community</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3c" value="1"> 1</label>
+                            <label><input type="radio" name="q3c" value="2"> 2</label>
+                            <label><input type="radio" name="q3c" value="3"> 3</label>
+                            <label><input type="radio" name="q3c" value="4"> 4</label>
+                            <label><input type="radio" name="q3c" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>Which websites he/she visited</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3d" value="1"> 1</label>
+                            <label><input type="radio" name="q3d" value="2"> 2</label>
+                            <label><input type="radio" name="q3d" value="3"> 3</label>
+                            <label><input type="radio" name="q3d" value="4"> 4</label>
+                            <label><input type="radio" name="q3d" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>The apps he/she downloaded</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3e" value="1"> 1</label>
+                            <label><input type="radio" name="q3e" value="2"> 2</label>
+                            <label><input type="radio" name="q3e" value="3"> 3</label>
+                            <label><input type="radio" name="q3e" value="4"> 4</label>
+                            <label><input type="radio" name="q3e" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>The in-app purchases he/she made</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3f" value="1"> 1</label>
+                            <label><input type="radio" name="q3f" value="2"> 2</label>
+                            <label><input type="radio" name="q3f" value="3"> 3</label>
+                            <label><input type="radio" name="q3f" value="4"> 4</label>
+                            <label><input type="radio" name="q3f" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>His/her search history</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3g" value="1"> 1</label>
+                            <label><input type="radio" name="q3g" value="2"> 2</label>
+                            <label><input type="radio" name="q3g" value="3"> 3</label>
+                            <label><input type="radio" name="q3g" value="4"> 4</label>
+                            <label><input type="radio" name="q3g" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>Monitor his/her use of digital devices by using a camera in his/her room</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3h" value="1"> 1</label>
+                            <label><input type="radio" name="q3h" value="2"> 2</label>
+                            <label><input type="radio" name="q3h" value="3"> 3</label>
+                            <label><input type="radio" name="q3h" value="4"> 4</label>
+                            <label><input type="radio" name="q3h" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>His/her screen time</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3i" value="1"> 1</label>
+                            <label><input type="radio" name="q3i" value="2"> 2</label>
+                            <label><input type="radio" name="q3i" value="3"> 3</label>
+                            <label><input type="radio" name="q3i" value="4"> 4</label>
+                            <label><input type="radio" name="q3i" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <p class="note">Note: For parental monitoring, calculate the mean by averaging the scores of the items above.</p>
+                </div>
+
+                <button type="button" onclick="calculateScores()">Calculate Scores</button>
+                <div id="results"></div>
+            </form>
+        </div>
+
+        <div id="chinese-survey" class="chinese">
+            <form id="survey-form-ch">
+                <div class="section">
+                    <h2>1. 家長干預方式</h2>
+                    <p>你做以下事情的頻率有多高</p>
+                    <p>從不 (1) 很少 (2) 有時 (3) 經常 (4) 總是 (5)</p>
+
+                    <div class="question">
+                        <p>a. 鼓勵你的孩子在互聯網上探索和學習新東西</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1a" value="1"> 1</label>
+                            <label><input type="radio" name="q1a" value="2"> 2</label>
+                            <label><input type="radio" name="q1a" value="3"> 3</label>
+                            <label><input type="radio" name="q1a" value="4"> 4</label>
+                            <label><input type="radio" name="q1a" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>b. 為你的孩子如何安全使用互聯網提供建議</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1b" value="1"> 1</label>
+                            <label><input type="radio" name="q1b" value="2"> 2</label>
+                            <label><input type="radio" name="q1b" value="3"> 3</label>
+                            <label><input type="radio" name="q1b" value="4"> 4</label>
+                            <label><input type="radio" name="q1b" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>c. 當你的孩子在互聯網上遇到困難或難以找到某事時提供幫助</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1c" value="1"> 1</label>
+                            <label><input type="radio" name="q1c" value="2"> 2</label>
+                            <label><input type="radio" name="q1c" value="3"> 3</label>
+                            <label><input type="radio" name="q1c" value="4"> 4</label>
+                            <label><input type="radio" name="q1c" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>d. 跟你的孩子解釋為什麼一些網站是適宜或不適宜的</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1d" value="1"> 1</label>
+                            <label><input type="radio" name="q1d" value="2"> 2</label>
+                            <label><input type="radio" name="q1d" value="3"> 3</label>
+                            <label><input type="radio" name="q1d" value="4"> 4</label>
+                            <label><input type="radio" name="q1d" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>e. 與你的孩子討論他/她在網上接觸到的商業行為（例如網絡廣告，應用程序內購買服務或者內容等）</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1e" value="1"> 1</label>
+                            <label><input type="radio" name="q1e" value="2"> 2</label>
+                            <label><input type="radio" name="q1e" value="3"> 3</label>
+                            <label><input type="radio" name="q1e" value="4"> 4</label>
+                            <label><input type="radio" name="q1e" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>f. 在你的孩子使用互聯網時與他/她坐在一起</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1f" value="1"> 1</label>
+                            <label><input type="radio" name="q1f" value="2"> 2</label>
+                            <label><input type="radio" name="q1f" value="3"> 3</label>
+                            <label><input type="radio" name="q1f" value="4"> 4</label>
+                            <label><input type="radio" name="q1f" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>g. 與你的孩子一起進行互聯網活動（例如，一起玩遊戲或者查找信息）</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1g" value="1"> 1</label>
+                            <label><input type="radio" name="q1g" value="2"> 2</label>
+                            <label><input type="radio" name="q1g" value="3"> 3</label>
+                            <label><input type="radio" name="q1g" value="4"> 4</label>
+                            <label><input type="radio" name="q1g" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>h. 限製你的孩子上網的時間或時間點</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1h" value="1"> 1</label>
+                            <label><input type="radio" name="q1h" value="2"> 2</label>
+                            <label><input type="radio" name="q1h" value="3"> 3</label>
+                            <label><input type="radio" name="q1h" value="4"> 4</label>
+                            <label><input type="radio" name="q1h" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>i. 限製你的孩子在網上可以做的事情</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1i" value="1"> 1</label>
+                            <label><input type="radio" name="q1i" value="2"> 2</label>
+                            <label><input type="radio" name="q1i" value="3"> 3</label>
+                            <label><input type="radio" name="q1i" value="4"> 4</label>
+                            <label><input type="radio" name="q1i" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>j. 要求你的孩子在使用電子產品中休息一下</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1j" value="1"> 1</label>
+                            <label><input type="radio" name="q1j" value="2"> 2</label>
+                            <label><input type="radio" name="q1j" value="3"> 3</label>
+                            <label><input type="radio" name="q1j" value="4"> 4</label>
+                            <label><input type="radio" name="q1j" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>k. 提議做可以替代網絡活動的其他活動（例如出門玩）</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1k" value="1"> 1</label>
+                            <label><input type="radio" name="q1k" value="2"> 2</label>
+                            <label><input type="radio" name="q1k" value="3"> 3</label>
+                            <label><input type="radio" name="q1k" value="4"> 4</label>
+                            <label><input type="radio" name="q1k" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>l. 要求你的孩子使用屏幕更大的電子產品</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1l" value="1"> 1</label>
+                            <label><input type="radio" name="q1l" value="2"> 2</label>
+                            <label><input type="radio" name="q1l" value="3"> 3</label>
+                            <label><input type="radio" name="q1l" value="4"> 4</label>
+                            <label><input type="radio" name="q1l" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>m. 提醒或者控制你的孩子離屏幕的距離</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1m" value="1"> 1</label>
+                            <label><input type="radio" name="q1m" value="2"> 2</label>
+                            <label><input type="radio" name="q1m" value="3"> 3</label>
+                            <label><input type="radio" name="q1m" value="4"> 4</label>
+                            <label><input type="radio" name="q1m" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <p class="note">註： 以上問題涵蓋網絡使用家長干預方式的五個維度。每個維度請根據下列對應題目計算其平均分：<br>
+                    積極干預(Active mediation)： 題目 a–e<br>
+                    共同使用 (Co-use)： 題目 f 及 g<br>
+                    限制性干預 (Restrictive mediation)： 題目 h 及 i<br>
+                    轉移干預 (Diversion mediation)： 題目 j 及 k<br>
+                    健康干預 (Health mediation)： 題目 l 及 m</p>
+                </div>
+
+                <div class="section">
+                    <h2>2. 技術干預</h2>
+                    <p>你是否在你孩子的電子產品上使用以下功能？</p>
+                    <p>否 (0) 是 (1)</p>
+
+                    <div class="question">
+                        <p>可以限製你的孩子上網時間的軟件</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2a" value="0"> 0</label>
+                            <label><input type="radio" name="q2a" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>防毒軟件</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2b" value="0"> 0</label>
+                            <label><input type="radio" name="q2b" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>用於攔截網絡廣告的軟件或應用</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2c" value="0"> 0</label>
+                            <label><input type="radio" name="q2c" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>未成年模式</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2d" value="0"> 0</label>
+                            <label><input type="radio" name="q2d" value="1"> 1</label>
+                        </div>
+                    </div>
+
+                    <p class="note">註：請計算上述各題目的平均分。</p>
+                </div>
+
+                <div class="section">
+                    <h2>3. 家長監控</h2>
+                    <p>你檢查你的孩子以下事情的頻率是多高？</p>
+                    <p>從不 (1) 很少 (2) 有時 (3) 經常 (4) 總是 (5)</p>
+
+                    <div class="question">
+                        <p>你的孩子添加到社交網絡/通訊工具中的好友</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3a" value="1"> 1</label>
+                            <label><input type="radio" name="q3a" value="2"> 2</label>
+                            <label><input type="radio" name="q3a" value="3"> 3</label>
+                            <label><input type="radio" name="q3a" value="4"> 4</label>
+                            <label><input type="radio" name="q3a" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>你的孩子與其他人的聊天記錄</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3b" value="1"> 1</label>
+                            <label><input type="radio" name="q3b" value="2"> 2</label>
+                            <label><input type="radio" name="q3b" value="3"> 3</label>
+                            <label><input type="radio" name="q3b" value="4"> 4</label>
+                            <label><input type="radio" name="q3b" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>你的孩子在社交網絡上的個人資料</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3c" value="1"> 1</label>
+                            <label><input type="radio" name="q3c" value="2"> 2</label>
+                            <label><input type="radio" name="q3c" value="3"> 3</label>
+                            <label><input type="radio" name="q3c" value="4"> 4</label>
+                            <label><input type="radio" name="q3c" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>你的孩子訪問了哪些網站</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3d" value="1"> 1</label>
+                            <label><input type="radio" name="q3d" value="2"> 2</label>
+                            <label><input type="radio" name="q3d" value="3"> 3</label>
+                            <label><input type="radio" name="q3d" value="4"> 4</label>
+                            <label><input type="radio" name="q3d" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>你的孩子下載了哪些APP</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3e" value="1"> 1</label>
+                            <label><input type="radio" name="q3e" value="2"> 2</label>
+                            <label><input type="radio" name="q3e" value="3"> 3</label>
+                            <label><input type="radio" name="q3e" value="4"> 4</label>
+                            <label><input type="radio" name="q3e" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>你的孩子購買了哪些APP內的內容與功能</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3f" value="1"> 1</label>
+                            <label><input type="radio" name="q3f" value="2"> 2</label>
+                            <label><input type="radio" name="q3f" value="3"> 3</label>
+                            <label><input type="radio" name="q3f" value="4"> 4</label>
+                            <label><input type="radio" name="q3f" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>你的孩子的搜索歷史</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3g" value="1"> 1</label>
+                            <label><input type="radio" name="q3g" value="2"> 2</label>
+                            <label><input type="radio" name="q3g" value="3"> 3</label>
+                            <label><input type="radio" name="q3g" value="4"> 4</label>
+                            <label><input type="radio" name="q3g" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>在你孩子的房間使用攝像頭監控他/她電子產品使用情況</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3h" value="1"> 1</label>
+                            <label><input type="radio" name="q3h" value="2"> 2</label>
+                            <label><input type="radio" name="q3h" value="3"> 3</label>
+                            <label><input type="radio" name="q3h" value="4"> 4</label>
+                            <label><input type="radio" name="q3h" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <p>你的孩子的屏幕使用時長</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3i" value="1"> 1</label>
+                            <label><input type="radio" name="q3i" value="2"> 2</label>
+                            <label><input type="radio" name="q3i" value="3"> 3</label>
+                            <label><input type="radio" name="q3i" value="4"> 4</label>
+                            <label><input type="radio" name="q3i" value="5"> 5</label>
+                        </div>
+                    </div>
+
+                    <p class="note">註：請計算上述各題目的平均分。</p>
+                </div>
+
+                <button type="button" onclick="calculateScores()">計算分數</button>
+                <div id="results"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showEnglish() {
+            document.getElementById('english-survey').style.display = 'block';
+            document.getElementById('chinese-survey').style.display = 'none';
+            document.getElementById('btn-en').classList.add('active');
+            document.getElementById('btn-zh').classList.remove('active');
+        }
+
+        function showChinese() {
+            document.getElementById('english-survey').style.display = 'none';
+            document.getElementById('chinese-survey').style.display = 'block';
+            document.getElementById('btn-zh').classList.add('active');
+            document.getElementById('btn-en').classList.remove('active');
+        }
+
+        function calculateScores() {
+            const form = document.activeElement.form || document.getElementById('survey-form') || document.getElementById('survey-form-ch');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+            const scores = {};
+
+            inputs.forEach(input => {
+                const name = input.name;
+                const value = parseInt(input.value);
+                if (!scores[name]) scores[name] = value;
+            });
+
+            // Calculate subscales
+            let activeMediation = 0;
+            const activeItems = ['q1a', 'q1b', 'q1c', 'q1d', 'q1e'];
+            activeItems.forEach(item => {
+                if (scores[item]) activeMediation += scores[item];
+            });
+            activeMediation /= activeItems.length;
+
+            let coUse = 0;
+            const coUseItems = ['q1f', 'q1g'];
+            coUseItems.forEach(item => {
+                if (scores[item]) coUse += scores[item];
+            });
+            coUse /= coUseItems.length;
+
+            let restrictiveMediation = 0;
+            const restrictiveItems = ['q1h', 'q1i'];
+            restrictiveItems.forEach(item => {
+                if (scores[item]) restrictiveMediation += scores[item];
+            });
+            restrictiveMediation /= restrictiveItems.length;
+
+            let diversionMediation = 0;
+            const diversionItems = ['q1j', 'q1k'];
+            diversionItems.forEach(item => {
+                if (scores[item]) diversionMediation += scores[item];
+            });
+            diversionMediation /= diversionItems.length;
+
+            let healthMediation = 0;
+            const healthItems = ['q1l', 'q1m'];
+            healthItems.forEach(item => {
+                if (scores[item]) healthMediation += scores[item];
+            });
+            healthMediation /= healthItems.length;
+
+            let technicalMediation = 0;
+            const technicalItems = ['q2a', 'q2b', 'q2c', 'q2d'];
+            technicalItems.forEach(item => {
+                if (scores[item]) technicalMediation += scores[item];
+            });
+            technicalMediation /= technicalItems.length;
+
+            let parentalMonitoring = 0;
+            const monitoringItems = ['q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i'];
+            monitoringItems.forEach(item => {
+                if (scores[item]) parentalMonitoring += scores[item];
+            });
+            parentalMonitoring /= monitoringItems.length;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h3>Your Parental Mediation Scores</h3>
+                <div class="chart-container">
+                    <canvas id="scoresChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            `;
+
+            const ctx = document.getElementById('scoresChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Active Mediation', 'Co-use', 'Restrictive Mediation', 'Diversion Mediation', 'Health Mediation', 'Technical Mediation', 'Parental Monitoring'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [activeMediation, coUse, restrictiveMediation, diversionMediation, healthMediation, technicalMediation, parentalMonitoring],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(199, 199, 199, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(199, 199, 199, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5
+                        }
+                    }
+                }
+            });
+
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Active Mediation', 'Co-use', 'Restrictive Mediation', 'Diversion Mediation', 'Health Mediation', 'Technical Mediation', 'Parental Monitoring'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [activeMediation, coUse, restrictiveMediation, diversionMediation, healthMediation, technicalMediation, parentalMonitoring],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 5
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
